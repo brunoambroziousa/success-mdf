@@ -1,0 +1,14 @@
+{
+  "name": "success-mdf-scripts",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "create-mdf": "node create-mdf.mjs",
+    "create-mdf:headless": "HEADLESS=1 node create-mdf.mjs"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "playwright": "^1.48.0"
+  }
+}
