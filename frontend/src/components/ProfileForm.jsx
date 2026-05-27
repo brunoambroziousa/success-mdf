@@ -14,13 +14,14 @@ export default function ProfileForm({ initial, onSubmit, onCancel }) {
 
   const submit = (e) => {
     e.preventDefault();
+    const ageValue = values.cust_Age.trim();
     const payload = {
       externalCode: values.externalCode.trim(),
       cust_Name: values.cust_Name.trim(),
-      cust_Age: Number(values.cust_Age),
+      cust_Age: ageValue,
       cust_Gender: values.cust_Gender || null,
     };
-    if (!payload.externalCode || !payload.cust_Name || Number.isNaN(payload.cust_Age)) {
+    if (!payload.externalCode || !payload.cust_Name || !ageValue) {
       alert('externalCode, Name, and Age are required.');
       return;
     }

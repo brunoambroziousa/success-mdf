@@ -5,10 +5,14 @@ const router = express.Router();
 const ENTITY = process.env.SF_MDF_ENTITY || 'cust_success_mdf';
 const SELECT = 'externalCode,cust_Name,cust_Age,cust_Gender';
 
-function forwardError(err, res) {
+function forwardError(err, res, requestBody) {
   const status = err.response?.status || 500;
   const payload = err.response?.data || { message: err.message };
-  res.status(status).json({ error: payload });
+  const errorResponse = {
+    error: payload,
+    ...(requestBody && { requestPayload: requestBody })
+  };
+  res.status(status).json(errorResponse);
 }
 
 function keyUrl(id) {
@@ -31,7 +35,7 @@ router.post('/', async (req, res) => {
     const { data } = await sf.post(`/${ENTITY}`, req.body);
     res.status(201).json(data?.d ?? data);
   } catch (err) {
-    forwardError(err, res);
+    forwardError(err, res, req.body);
   }
 });
 
@@ -40,7 +44,7 @@ router.put('/:id', async (req, res) => {
     await sf.put(keyUrl(req.params.id), req.body);
     res.status(204).end();
   } catch (err) {
-    forwardError(err, res);
+    forwardError(err, res, req.body);
   }
 });
 
